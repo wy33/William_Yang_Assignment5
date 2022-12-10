@@ -37,7 +37,7 @@ struct Edges {
 class Graph {
 public:
 	// Default constructor
-	Graph() : size_(0)
+	explicit Graph() : size_(0)
 	{}
 
 	// Copy constructor
@@ -72,7 +72,7 @@ public:
 
 	// One parameter constructor.
 	// Immediately generates graph.
-	Graph(const std::vector<Edges>& edges): size_(edges.size())
+	explicit Graph(const std::vector<Edges>& edges): size_(edges.size())
 	{
 		CreateGraph(edges);
 	}
