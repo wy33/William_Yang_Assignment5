@@ -50,7 +50,8 @@ Graph CreateGraph(const string& graph_filename) {
     return graph;
 }
 
-// Run Dijkstra's Shortest Path Algorithm.
+// Run Dijkstra's Shortest Path Algorithm for the given graph
+// using the given starting vertex.
 void FindShortestPath(Graph& graph, const int& start) {
     graph.DijkstraShortestPath(start);
 }

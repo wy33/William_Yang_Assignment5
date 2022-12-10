@@ -2,7 +2,6 @@
 #define STUDENT_GRAPH
 
 #include "binary_heap.h"
-#include "dsexceptions.h"
 #include <list>
 #include <limits>
 #include <iostream>
@@ -10,6 +9,7 @@
 #include <vector>
 #include <map>
 #include <stack>
+
 
 
 // Class to represent a vertex and all its edges.
@@ -31,9 +31,12 @@ struct Edges {
 	}
 };
 
+// Class Graph:
+// An adjacency list-based directed graph capable of finding the shortest path to each vertex
+// and can be queried for adjacent vertices (directed).
 class Graph {
 public:
-	// Default constructor.
+	// Default constructor
 	Graph() : size_(0)
 	{}
 
@@ -48,7 +51,7 @@ public:
 	// Destructor
 	~Graph()
 	{
-		size_ = 0;
+		MakeEmpty();
 	}
 
 	// Copy assignment
@@ -74,13 +77,15 @@ public:
 		CreateGraph(edges);
 	}
 
-	// Create the adjacency list graph.
-	// edges: a collection of all edges needed to create the graph.
+	// Create the adjacency list graph (clears the old graph, empty or otherwise).
+	// edges: a collection of all vertices and their respective edges
+	//		needed to create the graph.
 	void CreateGraph(const vector<Edges>& edges)
 	{
 		MakeEmpty();
 		size_ = edges.size();
 
+		// Loop through each edges object and add the edges to its respective vertex.
 		for (size_t i = 0; i < edges.size(); i++)
 		{
 			AddVertex(edges[i].start_vertex_);
@@ -88,6 +93,7 @@ public:
 		}
 	}
 
+	// Clear the graph
 	void MakeEmpty()
 	{
 		vertices_.clear();
@@ -95,15 +101,15 @@ public:
 	}
 
 	// Query adjaceny between a 2 vertices (directed).
-	// If distance between start and end is valid, return true;
-	// else false.
+	// If distance between start vertex is connected to end vertex,
+	// return true; else false.
 	bool AdjacencyQuery(const int& start, const int& end) const
 	{
 		// If distance is float min, one/both of the vertices don't exist
 		// or are not connected; thus return false.
 		if (DistanceBetween(start, end) == std::numeric_limits<float>::min())
 			return false;
-		return true;
+		return true;	// Start vertex is connected to end vertex.
 	}
 
 	// If start vertex is connected to end vertex (directed),
@@ -113,12 +119,12 @@ public:
 	float DistanceBetween(const int& start, const int& end) const
 	{
 		// Start vertex doesn't exist or end vertex doesn't exist,
-		// thus not connected to each other
+		// thus not connected to each other.
 		if (vertices_.find(start) == vertices_.end() || vertices_.find(end) == vertices_.end())
 			return std::numeric_limits<float>::min();
 
-		// Match end vertex with one in adjacency list and return its distance
-		for (auto& v : vertices_.at(start).adjacent_)
+		// Match end vertex with one in adjacency list and return its distance.
+		for (const Vertex& v : vertices_.at(start).adjacent_)
 			if (v.value_ == end)
 				return v.distance_;
 		return std::numeric_limits<float>::min();
@@ -126,13 +132,13 @@ public:
 
 	// Dijkstra's algorithm for shortest path.
 	void DijkstraShortestPath(const int& start) {
-		// Vertex does not exist
+		// Vertex does not exist, throw error.
 		if (!FindVertex(start))
 		{
 			std::cerr << "Starting vertex " << start << " does not exist." << std::endl;
 			exit(1);
 		}
-		else // Vertex exists, run Dijkstra's algorithm
+		else // Vertex exists, run Dijkstra's algorithm.
 			DijkstraShortestPath(vertices_.at(start));
 	}
 
@@ -141,19 +147,18 @@ public:
 	//				2: 
 	//				3: 5 6
 	//				...
-	void PrintAdjacencyLists()
+	void PrintAdjacencyLists() const
 	{
+		// Loop through the pairs in map (pair<int, Vertex>)
 		for (auto& v : vertices_)
 		{
 			std::cout << v.second.value_ << ':';
-			for (auto& w : v.second.adjacent_)
+			for (const Vertex& w : v.second.adjacent_)
 			{
 				std::cout << ' ' << w.value_;
 			}
 		}
 	}
-
-
 
 
 
@@ -188,6 +193,7 @@ private:
 		// Destructor
 		~Vertex()
 		{
+			adjacent_.clear();
 			value_ = 0;
 			distance_ = 0.0f;
 			known_ = false;
@@ -215,12 +221,6 @@ private:
 			rhs.previous_in_path_ = nullptr;
 			return *this;
 		}
-
-		// Constructor to move vertex value and distance
-//		Vertex(int&& val, float&& dis)
-//			: value_(std::move(val)), distance_(std::move(dis)),
-//			known_(false), previous_in_path_(nullptr)
-//		{}
 
 		// Add an adjacent vertex to list of adjacencies.
 		void AddAdjacentVertex(const Vertex& adjacent_vertex)
@@ -250,7 +250,8 @@ private:
 		vertices_[val] = Vertex{ val };
 	}
 
-	// Add adjacent vertices to an existing vertex's adjacency list.
+	// Add adjacent vertices to an existing vertex's adjacency list
+	// given the edges of the respective vertex.
 	void AddAdjacentVertices(const Edges& edges, const int& val)
 	{
 		for (int i = 0; i < edges.size_; i++)
@@ -267,12 +268,16 @@ private:
 		return false;	// Not Found
 	}
 
+/*	This function is viable if Vertex class is a public class of its own.
+
+	// Find vertex given a vertex object (
 	bool FindVertex(const Vertex& v) const
 	{
 		if (vertices_.find(v.value_) != vertices_.end())
 			return true;	// Found
 		return false;	// Not Found
 	}
+*/
 
 	// Find the cost from vertex v to vertex w.
 	// Vertex v is the referenced vertex from the member vertices_
@@ -287,7 +292,7 @@ private:
 	// thus this function is meant to be a followup call after running Dijkstra.
 	void PrintShortestPaths() const {
 		std::stack<int> path;
-		// Loop through vertices in map
+		// Loop through vertices in map (pair<int, Vertex>)
 		for (auto& v : vertices_)
 		{
 			std::cout << v.first << ':';
@@ -320,6 +325,10 @@ private:
 		}
 	}
 
+	// Dijkstra's Shortest Path Algorithm.
+	// Given a starting vertex, run algorithm and find the shortest path to every
+	// vertex in the graph from starting vertex.
+	// Then print the results of the run.
 	void DijkstraShortestPath(Vertex& start) {
 		// Set all vertices':
 		// distance_ = INFINITY
@@ -349,7 +358,7 @@ private:
 			v.known_ = true;	// Vertex visited
 
 			// Compare distances and choose shortest route
-			for (Vertex& w : v.adjacent_) {
+			for (const Vertex& w : v.adjacent_) {
 				if (!vertices_.at(w.value_).known_) {
 					const auto new_distance_through_v = v.distance_ + cost(v, w);
 					if (new_distance_through_v < vertices_.at(w.value_).distance_) {
@@ -358,7 +367,7 @@ private:
 						vertices_.at(w.value_).previous_in_path_ = &vertices_.at(v.value_);
 					}
 				}
-			} // end of for each Vertex w
+			} // end of for each Vertex w
 		} // end of while (true)
 		PrintShortestPaths();	// Print the result (shortest paths to each vertex)
 	}
