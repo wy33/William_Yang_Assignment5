@@ -112,10 +112,6 @@ public:
 	// one/both of them doesn't exist.
 	float DistanceBetween(const int& start, const int& end) const
 	{
-		// Start vertex equals end vertex, connected, distance is 0
-		if (start == end)
-			return 0.0f;
-
 		// Start vertex doesn't exist or end vertex doesn't exist,
 		// thus not connected to each other
 		if (vertices_.find(start) == vertices_.end() || vertices_.find(end) == vertices_.end())
@@ -362,7 +358,7 @@ private:
 						vertices_.at(w.value_).previous_in_path_ = &vertices_.at(v.value_);
 					}
 				}
-			} // end of for each Vertex w…
+			} // end of for each Vertex wÂ…
 		} // end of while (true)
 		PrintShortestPaths();	// Print the result (shortest paths to each vertex)
 	}
