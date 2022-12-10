@@ -32,7 +32,7 @@ Graph CreateGraph(const string& graph_filename) {
     while (graph_file >> vertex_value)
     {
         float distance = 0.0f;
-        Edges new_vertex = { vertex_value };
+        Edges new_vertex { vertex_value };
         if(graph_file.peek() == ' ')
             graph_file.ignore(1, ' ');
 

@@ -12,14 +12,14 @@
 
 
 
-// Class to represent a vertex and all its edges.
-struct Edges {
-	int start_vertex_ = 0;
-	int size_ = 0;					// Number of edges
-	std::vector<int> end_vertex_;	// All the vertices connected to start vertex
-	std::vector<float> distance_;	// All the distances associated with each end vertex
-
-	Edges(const int& start) : start_vertex_(start)
+// Class Edges:
+// Class to represent a vertex and all its edges
+// Vertex is directed (connected one way to its adjacent vertices).
+class Edges {
+public:
+	// One parameter constructor.
+	// Initialize starting vertex.
+	explicit Edges(const int& start) : start_vertex_(start)
 	{}
 
 	// Add edge/adjacent vertex
@@ -29,7 +29,39 @@ struct Edges {
 		distance_.push_back(dis);
 		size_++;
 	}
-};
+
+	// Return starting vertex
+	int StartVertex() const
+	{
+		return start_vertex_;
+	}
+
+	// Return number of adjacent vertices (size)
+	int Size() const
+	{
+		return size_;
+	}
+	
+	// Return end vertices vector
+	const std::vector<int>& EndVertices() const
+	{
+		return end_vertex_;
+	}
+
+	// Return end vertices' distances vector
+	const std::vector<float>& Distances() const
+	{
+		return distance_;
+	}
+
+private:
+	int start_vertex_ = 0;			// Starting vertex
+	int size_ = 0;					// Number of edges
+	std::vector<int> end_vertex_;	// All the vertices connected to start vertex
+	std::vector<float> distance_;	// All the distances associated with each end vertex
+};	// Edges class
+
+
 
 // Class Graph:
 // An adjacency list-based directed graph capable of finding the shortest path to each vertex
@@ -88,8 +120,8 @@ public:
 		// Loop through each edges object and add the edges to its respective vertex.
 		for (size_t i = 0; i < edges.size(); i++)
 		{
-			AddVertex(edges[i].start_vertex_);
-			AddAdjacentVertices(edges[i], edges[i].start_vertex_);
+			AddVertex(edges[i].StartVertex());
+			AddAdjacentVertices(edges[i], edges[i].StartVertex());
 		}
 	}
 
@@ -149,6 +181,13 @@ public:
 	//				...
 	void PrintAdjacencyLists() const
 	{
+		// Return if graph is empty
+		if (size_ == 0)
+		{
+			std::cout << "Graph is empty, nothing to print." << std::endl;
+			return;
+		}
+
 		// Loop through the pairs in map (pair<int, Vertex>)
 		for (auto& v : vertices_)
 		{
@@ -157,6 +196,7 @@ public:
 			{
 				std::cout << ' ' << w.value_;
 			}
+			std::cout << std::endl;
 		}
 	}
 
@@ -254,9 +294,9 @@ private:
 	// given the edges of the respective vertex.
 	void AddAdjacentVertices(const Edges& edges, const int& val)
 	{
-		for (int i = 0; i < edges.size_; i++)
+		for (int i = 0; i < edges.Size(); i++)
 		{
-			vertices_.at(val).AddAdjacentVertex(Vertex{edges.end_vertex_[i], edges.distance_[i]});
+			vertices_.at(val).AddAdjacentVertex(Vertex { edges.EndVertices()[i], edges.Distances()[i] } );
 		}
 	}
 
@@ -282,7 +322,8 @@ private:
 	// Find the cost from vertex v to vertex w.
 	// Vertex v is the referenced vertex from the member vertices_
 	// Vertex w is directly referenced from v's adjacency list.
-	float cost(const Vertex& v, const Vertex& w) const {
+	float cost(const Vertex& v, const Vertex& w) const
+	{
 		return w.distance_;
 	}
 
@@ -299,7 +340,8 @@ private:
 			Vertex* prev = v.second.previous_in_path_;
 
 			// No valid path exists to vertex
-			if (prev == nullptr && v.second.distance_ != 0.0f) {
+			if (prev == nullptr && v.second.distance_ != 0.0f)
+			{
 				std::cout << " not_possible" << std::endl;
 				continue;
 			}
