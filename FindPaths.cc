@@ -46,7 +46,7 @@ Graph CreateGraph(const string& graph_filename) {
         edges.push_back(new_vertex);
     }
 
-    Graph graph = { edges };
+    Graph graph { edges };
     return graph;
 }
 
