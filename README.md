@@ -19,7 +19,7 @@ Edges is a class used to aid in the creation of Graph objects. The constructor o
 Each Edges object contains a vertex value and its connected vertices (vertex value and distance) that it is connected to.
 
 **Vertex (Embedded inside Graph class)**
-Vertex is a class used to represent the vertices of the graph. The 
+Vertex is a class used to represent the vertices of the graph. Each Vertex object will contain a list of vertices that it is adjacent to it (vertices in list contain everything that the Vertex class)
 
 **Graph**
 
