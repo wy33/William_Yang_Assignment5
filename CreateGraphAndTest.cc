@@ -1,3 +1,7 @@
+// William Yang
+// CreateGraphAndTest.cc: a file to test the creation of a Graph object
+// and query adjacencies for the graph.
+
 #include <iostream>
 #include <vector>
 #include <string>

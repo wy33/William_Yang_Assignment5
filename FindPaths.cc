@@ -1,3 +1,7 @@
+// William Yang
+// FindPaths.cc: a file to run Dijkstra's algorithm on
+// a provided graph file.
+
 #include <iostream>
 #include <vector>
 #include <string>

@@ -1,3 +1,6 @@
+// William Yang
+// graph.h: An adjacency list-based graph and all its required components.
+
 #ifndef STUDENT_GRAPH
 #define STUDENT_GRAPH
 
@@ -131,6 +134,12 @@ public:
 		vertices_.clear();
 		size_ = 0;
 	}
+	
+	// Return the size of graph (number of vertices)
+	int Size() const
+	{
+		return size_;
+	}
 
 	// Query adjaceny between a 2 vertices (directed).
 	// If distance between start vertex is connected to end vertex,
@@ -163,7 +172,8 @@ public:
 	}
 
 	// Dijkstra's algorithm for shortest path.
-	void DijkstraShortestPath(const int& start) {
+	void DijkstraShortestPath(const int& start)
+	{
 		// Vertex does not exist, throw error.
 		if (!FindVertex(start))
 		{
@@ -331,7 +341,8 @@ private:
 	// in graph after running Dijkstra algorithm.
 	// Starting vertex is determined when running Dijkstra,
 	// thus this function is meant to be a followup call after running Dijkstra.
-	void PrintShortestPaths() const {
+	void PrintShortestPaths() const
+	{
 		std::stack<int> path;
 		// Loop through vertices in map (pair<int, Vertex>)
 		for (auto& v : vertices_)
@@ -371,12 +382,14 @@ private:
 	// Given a starting vertex, run algorithm and find the shortest path to every
 	// vertex in the graph from starting vertex.
 	// Then print the results of the run.
-	void DijkstraShortestPath(Vertex& start) {
+	void DijkstraShortestPath(Vertex& start)
+	{
 		// Set all vertices':
 		// distance_ = INFINITY
 		// known_ = false
 		// previous_in_path_ = nullptr
-		for (std::map<int, Vertex>::iterator i = vertices_.begin(); i != vertices_.end(); i++) {
+		for (std::map<int, Vertex>::iterator i = vertices_.begin(); i != vertices_.end(); i++)
+		{
 			i->second.distance_ = std::numeric_limits<float>::max();	// INFINITY
 			i->second.known_ = false;
 			i->second.previous_in_path_ = nullptr;
@@ -387,10 +400,12 @@ private:
 		priority_queue.insert(start);
 		Vertex v;	// Copy of vertex to enqueue and dequeue
 
-		while (true) {
+		while (true)
+		{
 			bool success = false;
 
-			while (!priority_queue.isEmpty() && !success) {
+			while (!priority_queue.isEmpty() && !success)
+			{
 				priority_queue.deleteMin(v);	// Dequeue vertex into v
 				if (!v.known_)	// Prevents re-reading an already read vertex
 					success = true;
@@ -400,10 +415,13 @@ private:
 			v.known_ = true;	// Vertex visited
 
 			// Compare distances and choose shortest route
-			for (const Vertex& w : v.adjacent_) {
-				if (!vertices_.at(w.value_).known_) {
+			for (const Vertex& w : v.adjacent_)
+			{
+				if (!vertices_.at(w.value_).known_)
+				{
 					const auto new_distance_through_v = v.distance_ + cost(v, w);
-					if (new_distance_through_v < vertices_.at(w.value_).distance_) {
+					if (new_distance_through_v < vertices_.at(w.value_).distance_)
+					{
 						vertices_.at(w.value_).distance_ = new_distance_through_v; // Decrease w.distance_
 						priority_queue.insert(vertices_.at(w.value_));
 						vertices_.at(w.value_).previous_in_path_ = &vertices_.at(v.value_);
