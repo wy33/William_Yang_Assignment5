@@ -20,6 +20,8 @@
 // Vertex is directed (connected one way to its adjacent vertices).
 class Edges {
 public:
+	Edges() = delete;	// Delete default constructor
+
 	// One parameter constructor.
 	// Initialize starting vertex.
 	explicit Edges(const int& start) : start_vertex_(start)
