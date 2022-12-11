@@ -49,6 +49,7 @@ Graph CreateGraph(const string& graph_filename) {
         }
         edges.push_back(new_vertex);
     }
+    graph_file.close();
 
     Graph graph { edges };
     return graph;

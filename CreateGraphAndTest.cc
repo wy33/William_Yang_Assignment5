@@ -51,7 +51,8 @@ Graph CreateGraph(const string& graph_filename) {
         }
         edges.push_back(new_vertex);
     }
-    
+    graph_file.close();
+
     Graph graph { edges };
     return graph;
 }
@@ -78,6 +79,7 @@ void QueryAdjacency(Graph& graph, const string& query_filename) {
         else
             cout << "not_connected" << endl;
     }
+    query_file.close();
 }
 
 // Driver for creating and querying graph.
