@@ -26,7 +26,7 @@ Vertex is a class used to represent the vertices of the graph. Each Vertex objec
 
 **Graph**
 
-Graph is the main class. It is composed of 2 members, its size (integer) and the vertices represented by an ordered map (key is vertex value, stored object is Vertex). An ordered map was chosen to store the vertices with flexibility in mind. If a vertex's name/value becomes a string, the Graph class should function the same provided the necessary changes are made. Perhaps the Graph class could've been templated to so that this could've been determined during runtime, but this class was designed to specifically for HW's format for the graphs.
+Graph is the main class. It is composed of 2 members, its size (integer) and the vertices represented by an ordered map (key is vertex value, stored object is Vertex). An ordered map was chosen to store the vertices with flexibility in mind. If a vertex's name/value becomes a string, the Graph class should function the same provided the necessary changes are made. Perhaps the Graph class could've been templated to so that this could've been determined during runtime, but this class was designed to specifically for the HW's graph file format for the graphs.
 
 `CreateGraphAndTest.cc`
 - CreateGraph(): reads the provided graph file to create the Graph object, then returns it.
