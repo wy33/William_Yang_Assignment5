@@ -12,7 +12,7 @@ This repository contains the following:
 All parts completed.
 
 `graph.h`
-The graph.h file contains 3 core classes (2 visible, 1 embedded inside another).
+- The graph.h file contains 3 core classes (2 visible, 1 embedded inside another).
 Classes: Edges, Vertex, and Graph.
 
 **Edges**
