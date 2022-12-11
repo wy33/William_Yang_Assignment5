@@ -47,3 +47,27 @@ To delete executables and object files, type:
 ```bash
 make clean
 ```
+
+To run CreateGraphAndTest, type:
+
+```bash
+./CreateGraphAndTest <graph file> <adjacency query file>
+```
+
+```bash
+./CreateGraphAndTest Graph1.txt AdjacencyQueries1.txt
+```
+
+```bash
+./CreateGraphAndTest Graph2.txt AdjacencyQueries2.txt
+```
+
+To run FindPaths, type:
+
+```bash
+./FindPaths <graph file> <starting vertex integer>
+```
+
+```bash
+./FindPaths Graph2.txt 1
+```
